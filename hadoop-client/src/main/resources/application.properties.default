@@ -1,0 +1,7 @@
+hadoop.conf.path=${hadoop.conf.path}
+
+# support kerberos
+hadoop.security.authentication=${hadoop.conf.path}
+username.client.kerberos.principal=${hadoop.conf.path}
+username.client.keytab.file=${hadoop.conf.path}
+java.security.krb5.conf=${hadoop.conf.path}

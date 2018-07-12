@@ -137,7 +137,17 @@ println("input:" + configString("input"))
 [com.alex.space.spark.mains.DataFrameDemo](https://github.com/BowenSun90/client-collection/blob/master/spark-client/src/main/scala/com/alex/space/spark/mains/DataFrameDemo.scala)
 
 
+## Hive
+**1.hive常用udf方法**  
+[com.alex.space.hive.udf](https://github.com/BowenSun90/client-collection/blob/master/hive-udf/src/main/java/com/alex/space/hive/udf)
+
 ## Storm
+**1.Storm接入Kafka数据**  
+== TODO ==
+
+
+
+
 
 
 TO be continue

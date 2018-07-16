@@ -57,6 +57,17 @@
           <artifactId>hive-jdbc</artifactId>
           <version>0.13.1a</version>
         </dependency>
+        <!-- livy -->
+        <dependency>
+          <groupId>com.cloudera.livy</groupId>
+          <artifactId>livy-client-http</artifactId>
+          <version>0.2.0</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>fluent-hc</artifactId>
+          <version>4.5.2</version>
+        </dependency>
       </dependencies>
     </profile>
     <profile>

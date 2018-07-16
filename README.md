@@ -139,7 +139,7 @@ println("input:" + configString("input"))
 
 **3.Livy通过Rest提交Spark任务**
 [com.alex.space.spark.livy](https://github.com/BowenSun90/client-collection/blob/master/spark-client/src/main/java/com/alex/space/spark/livy)
-
+提交方式与[spark-client/bin/wordCount.sh](https://github.com/BowenSun90/client-collection/blob/master/spark-client/bin/wordCount.sh)相同
 
 
 ## Hive

@@ -26,9 +26,14 @@ java.security.krb5.conf=${hadoop.conf.path}
 
 
 **2.MapReduce示例**  
-WordCountTask   
-==TODO==
-
+- 2.1 排序   
+  - 2.1.1 简单排序   
+  [com.alex.space.hadoop.example.simplesort](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/simplesort)   
+  - 2.1.2 二次排序      
+  [com.alex.space.hadoop.example.secondsort](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/secondsort)    
+- 2.2 比较
+  - 2.2.1 按值排序  
+  [com.alex.space.hadoop.example,comparator](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/comparator)   
 
 
 ## HBase Client

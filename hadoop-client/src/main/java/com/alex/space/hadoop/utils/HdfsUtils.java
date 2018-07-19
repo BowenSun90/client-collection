@@ -11,9 +11,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
 
@@ -173,6 +177,49 @@ public class HdfsUtils {
     } finally {
       CommonUtils.close(os);
     }
+  }
+
+  public static void uploadFile(String local, String remote)
+      throws IOException, URISyntaxException {
+    FileSystem fs = FileSystem.get(new URI(remote), new Configuration());
+    Path path = new Path(remote);
+    if (fs.exists(path)) {
+      fs.delete(path, true);
+    }
+
+    fs.copyFromLocalFile(new Path(local), new Path(remote));
+
+    fs.close();
+  }
+
+  public static void deletePath(String remote) throws IOException, URISyntaxException {
+
+    FileSystem fs = FileSystem.get(new URI(remote), new Configuration());
+
+    Path path = new Path(remote);
+    if (fs.exists(path)) {
+      fs.delete(path, true);
+    }
+
+    fs.close();
+  }
+
+  public static void init(String local, String input, String output)
+      throws IOException, URISyntaxException {
+    FileSystem fs = FileSystem.get(new URI(input), new Configuration());
+    Path inPath = new Path(input);
+    if (fs.exists(inPath)) {
+      fs.delete(inPath, true);
+    }
+
+    fs.copyFromLocalFile(new Path(local), new Path(input));
+
+    Path outPath = new Path(output);
+    if (fs.exists(outPath)) {
+      fs.delete(outPath, true);
+    }
+
+    fs.close();
   }
 
   /**

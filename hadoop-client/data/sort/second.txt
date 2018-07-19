@@ -1,0 +1,8 @@
+sort1	1
+sort2	3
+sort2	88
+sort2	54
+sort1	2
+sort6	22
+sort6	888
+sort6	5

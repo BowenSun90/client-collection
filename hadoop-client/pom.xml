@@ -16,6 +16,7 @@
 
   <properties>
     <hadoop.version>2.6.0-cdh5.7.1</hadoop.version>
+    <mapred.version>2.6.0-mr1-cdh5.7.1</mapred.version>
   </properties>
 
   <dependencies>
@@ -28,6 +29,11 @@
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-hdfs</artifactId>
       <version>${hadoop.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-core</artifactId>
+      <version>${mapred.version}</version>
     </dependency>
     <dependency>
       <groupId>com.alex.space</groupId>

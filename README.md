@@ -22,20 +22,31 @@ java.security.krb5.conf=${hadoop.conf.path}
 ```
 
 **1.操作Hdfs文件和文件夹**  
-[com.alex.space.hadoop.utils.HdfsUtils](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/utils/HdfsUtils.java)
+[com.alex.space.hadoop.utils.HdfsUtils](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/utils/HdfsUtils.java)
 
 
 **2.MapReduce示例**  
 - 2.1 排序   
   - 2.1.1 简单排序   
-  [com.alex.space.hadoop.example.simplesort](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/simplesort)   
+  [com.alex.space.hadoop.example.simplesort](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/simplesort)   
   - 2.1.2 二次排序      
-  [com.alex.space.hadoop.example.secondsort](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/secondsort)    
+  [com.alex.space.hadoop.example.secondsort](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/secondsort)    
 - 2.2 比较
   - 2.2.1 按值排序  
-  [com.alex.space.hadoop.example,comparator](https://github.com/BowenSun90/Utils/blob/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/comparator)   
-
-
+  [com.alex.space.hadoop.example,comparator](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/comparator)   
+- 2.3 分区
+  - 2.3.1 自定义分区     
+  [com.alex.space.hadoop.example,partition](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/partition)  
+- 2.4 连接
+  - 2.4.1 Map-side join 
+  [com.alex.space.hadoop.example,join.MapJoinApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/join/MapJoinApp.java)  
+  - 2.4.2 Reduce-side join  
+  [com.alex.space.hadoop.example,join.ReduceJoinApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/join/ReduceJoinApp.java)     
+- 2.5 数据库操作    
+  - 2.5.1 Input    
+  [com.alex.space.hadoop.example,database.DBInputApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/database/DBInputApp.java)    
+  - 2.5.2 Output  
+  [com.alex.space.hadoop.example,database.DBOutputApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/database/DBOutputApp.java)      
 ## HBase Client
 配置HBase连接信息 `resources/application.properties`
 ```
@@ -57,16 +68,16 @@ username.client.keytab.file=
 ```
 
 **1.HBaseAdmin操作HBase**  
-[com.alex.space.hbase.utils.HBaseAdminUtils](https://github.com/BowenSun90/Utils/blob/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HbaseAdminUtils.java)  
+[com.alex.space.hbase.utils.HBaseAdminUtils](https://github.com/BowenSun90/client-collection/tree/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HbaseAdminUtils.java)  
 
 
 **2.HBaseAPI操作HBase**  
-[com.alex.space.hbase.utils.HBaseUtils](https://github.com/BowenSun90/Utils/blob/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HBaseUtils.java)  
+[com.alex.space.hbase.utils.HBaseUtils](https://github.com/BowenSun90/client-collection/tree/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HBaseUtils.java)  
 配置HBase连接信息 `resources/application.properties`
 
 
 **3.创建预分区表**  
-[com.alex.space.hbase.utils.HBaseTableUtils](https://github.com/BowenSun90/Utils/blob/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HBaseTableUtils.java)  
+[com.alex.space.hbase.utils.HBaseTableUtils](https://github.com/BowenSun90/client-collection/tree/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HBaseTableUtils.java)  
 根据Rowkey首字母分区，0\~9A\~Za~z共62个region
 >建议Rowkey添加md5前缀，如果不需要scan一个区域的功能
 
@@ -82,7 +93,7 @@ es.node.port=${es.node.port}
 ```
 
 **1.TransportClient操作Elastic**    
-[com.alex.space.elastic.utils.ElasticUtils](https://github.com/BowenSun90/Utils/blob/master/elastic-client/src/main/java/com/alex/space/elastic/utils/ElasticUtils.java)
+[com.alex.space.elastic.utils.ElasticUtils](https://github.com/BowenSun90/client-collection/tree/master/elastic-client/src/main/java/com/alex/space/elastic/utils/ElasticUtils.java)
 
 
 
@@ -95,15 +106,15 @@ zk.nodes=${zk.nodes}
 ```
 
 **1.ZKClient操作Zookeeper**  
-[com.alex.space.zoo.client.ZooClient](https://github.com/BowenSun90/Utils/blob/master/zoo-client/src/main/java/com/alex/space/zoo/client/ZkClientDemo.java)
+[com.alex.space.zoo.client.ZooClient](https://github.com/BowenSun90/client-collection/tree/master/zoo-client/src/main/java/com/alex/space/zoo/client/ZkClientDemo.java)
 
 
 **2.Curator操作Zookeeper**  
-[com.alex.space.zoo.curator.CuratorClientDemo](https://github.com/BowenSun90/Utils/blob/master/zoo-client/src/main/java/com/alex/space/zoo/curator/CuratorClientDemo.java)
+[com.alex.space.zoo.curator.CuratorClientDemo](https://github.com/BowenSun90/client-collection/tree/master/zoo-client/src/main/java/com/alex/space/zoo/curator/CuratorClientDemo.java)
 
 
 **3.Curator高级特性**  
-[com.alex.space.zoo.curator.recipes](https://github.com/BowenSun90/Utils/blob/master/zoo-client/src/main/java/com/alex/space/zoo/curator/recipes)
+[com.alex.space.zoo.curator.recipes](https://github.com/BowenSun90/client-collection/tree/master/zoo-client/src/main/java/com/alex/space/zoo/curator/recipes)
 
 
 
@@ -113,7 +124,7 @@ zk.nodes=${zk.nodes}
 集群执行配置（如文件路径）在`prod.properties`中配置  
 
 **1.Spark任务基类**   
-[com.alex.space.spark.mains.BaseWorker](https://github.com/BowenSun90/client-collection/blob/master/spark-client/src/main/scala/com/alex/space/spark/mains/BaseWorker.scala)  
+[com.alex.space.spark.mains.BaseWorker](https://github.com/BowenSun90/client-collection/tree/master/spark-client/src/main/scala/com/alex/space/spark/mains/BaseWorker.scala)  
 默认的配置以`default`作为前缀   
 ```
 # application.conf
@@ -144,12 +155,12 @@ println("input:" + configString("input"))
 
 **3.Livy通过Rest提交Spark任务**
 [com.alex.space.spark.livy](https://github.com/BowenSun90/client-collection/blob/master/spark-client/src/main/java/com/alex/space/spark/livy)
-提交方式与[spark-client/bin/wordCount.sh](https://github.com/BowenSun90/client-collection/blob/master/spark-client/bin/wordCount.sh)相同
+提交方式与[spark-client/bin/wordCount.sh](https://github.com/BowenSun90/client-collection/tree/master/spark-client/bin/wordCount.sh)相同
 
 
 ## Hive
 **1.hive常用udf方法**  
-[com.alex.space.hive.udf](https://github.com/BowenSun90/client-collection/blob/master/hive-udf/src/main/java/com/alex/space/hive/udf)
+[com.alex.space.hive.udf](https://github.com/BowenSun90/client-collection/tree/master/hive-udf/src/main/java/com/alex/space/hive/udf)
 
 ## Storm
 **1.Storm接入Kafka数据**  

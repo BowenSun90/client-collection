@@ -1,0 +1,4 @@
+zhang	male	20	1
+li	female	25	2
+wang	female	30	3
+zhou	male	35	2

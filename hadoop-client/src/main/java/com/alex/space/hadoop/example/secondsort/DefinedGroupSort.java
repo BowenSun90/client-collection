@@ -13,7 +13,7 @@ public class DefinedGroupSort extends WritableComparator {
   protected DefinedGroupSort() {
     super(CombinationKey.class, true);
   }
-  
+
   @Override
   public int compare(WritableComparable a, WritableComparable b) {
     System.out.println("---------------------进入自定义分组---------------------");

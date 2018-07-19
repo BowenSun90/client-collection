@@ -47,6 +47,17 @@ java.security.krb5.conf=${hadoop.conf.path}
   [com.alex.space.hadoop.example,database.DBInputApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/database/DBInputApp.java)    
   - 2.5.2 Output  
   [com.alex.space.hadoop.example,database.DBOutputApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/database/DBOutputApp.java)      
+- 2.6 数据去重  
+  - 2.6.1 数据去重   
+  [com.alex.space.hadoop.example,diff.DiffApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/diff/DiffApp.java)   
+- 2.7 自定义数据类型   
+  - 2.7.1 自定义数据类型  
+  [com.alex.space.hadoop.example,entity](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/entity)
+- 2.8 索引  
+  - 2.8.1 倒排索引  
+  [com.alex.space.hadoop.example,index](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/index)   
+     
+    
 ## HBase Client
 配置HBase连接信息 `resources/application.properties`
 ```

@@ -56,7 +56,11 @@ java.security.krb5.conf=${hadoop.conf.path}
 - 2.8 索引  
   - 2.8.1 倒排索引  
   [com.alex.space.hadoop.example,index](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/index)   
-     
+- 2.9 实例  
+  - 2.9.1 WordCount  
+  [com.alex.space.hadoop.example,wordcount](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/wordcount)      
+  - 2.9.2 KPI Analysis  
+  [com.alex.space.hadoop.example,kpi](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/kpi)
     
 ## HBase Client
 配置HBase连接信息 `resources/application.properties`

@@ -9,7 +9,6 @@ object Worker extends BaseWorker {
 
     val sparkContext = new SparkContext(sparkConf)
 
-
     new DataFrameDemo().run(sparkContext)
     new DataFrameDemo().runAsRdd(sparkContext)
     new DataFrameDemo().runAsSchema(sparkContext)

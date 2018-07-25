@@ -38,7 +38,7 @@ java.security.krb5.conf=${hadoop.conf.path}
   - 2.3.1 自定义分区     
   [com.alex.space.hadoop.example,partition](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/partition)  
 - 2.4 连接
-  - 2.4.1 Map-side join 
+  - 2.4.1 Map-side join
   [com.alex.space.hadoop.example,join.MapJoinApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/join/MapJoinApp.java)  
   - 2.4.2 Reduce-side join  
   [com.alex.space.hadoop.example,join.ReduceJoinApp](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/join/ReduceJoinApp.java)     
@@ -61,7 +61,7 @@ java.security.krb5.conf=${hadoop.conf.path}
   [com.alex.space.hadoop.example,wordcount](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/wordcount)      
   - 2.9.2 KPI Analysis  
   [com.alex.space.hadoop.example,kpi](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/kpi)
-    
+
 ## HBase Client
 配置HBase连接信息 `resources/application.properties`
 ```
@@ -181,9 +181,49 @@ println("input:" + configString("input"))
 **1.Storm接入Kafka数据**  
 == TODO ==
 
+## Springboot
+**1.Springboot web sample project**  
+配置文件`application.properties`
+```
+# spring application config
+spring.application.name=webservice-template
+spring.profiles.active=${spring.profiles.active}
+server.context-path=/
+server.port=${port}
 
+# mybatis mapper config
+mybatis.mapper-locations=classpath*:mapper/**Mapper.xml
 
+# guava memory cache config
+guava.cache.maximumSize=1000
+guava.cache.duration=1
+# DAYS |HOURS |MINUTES |SECONDS |MILLISECONDS |MICROSECONDS |NANOSECONDS
+guava.cache.unit=DAYS
+```
+数据库配置`application-{spring.profiles.active}.properties`
+```
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://${host}:${port}/${database}
+spring.datasource.username=${username}
+spring.datasource.password=${password}
 
+spring.datasource.max-idle=50
+spring.datasource.max-wait=10000
+spring.datasource.min-idle=10
+spring.datasource.initial-size=10
+```
+启动类   
+[WebserviceApplication]()   
+
+**2.Profile**   
+DEV：使用内嵌Tomcat容器启动  
+PROD：不打包内嵌Tomcat，打包为war放到Jetty中启动   
+
+**3.Swagger APIs**
+
+**4.Guava memory cache**
+
+**5.Security config**  
 
 
 TO be continue

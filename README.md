@@ -96,6 +96,10 @@ username.client.keytab.file=
 根据Rowkey首字母分区，0\~9A\~Za~z共62个region
 >建议Rowkey添加md5前缀，如果不需要scan一个区域的功能
 
+**4.Hbase MapReduce Scan**    
+[com.alex.space.hbase.mapred.HBaseMapRedScan](https://github.com/BowenSun90/client-collection/tree/master/hbase-client/src/main/java/com/alex/space/hbase/mapred)    
+MR实现HBase的Scan，HBase默认ScanAPI效率低   
+
 
 
 ## ElasticSearch
@@ -213,18 +217,19 @@ spring.datasource.min-idle=10
 spring.datasource.initial-size=10
 ```
 启动类   
-[WebserviceApplication]()   
+[WebserviceApplication](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/src/main/java/com/alex/space/springboot/WebserviceApplication.java)   
 
 **2.Profile**   
 DEV：使用内嵌Tomcat容器启动  
 PROD：不打包内嵌Tomcat，打包为war放到Jetty中启动   
+[pom.xml](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/pom.xml)   
 
-**3.Swagger APIs**
+**3.Swagger APIs**   
+[SwaggerConfig](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/src/main/java/com/alex/space/springboot/cfg/SwaggerConfig.java)  
 
-**4.Guava memory cache**
+**4.Guava memory cache**   
+[UserService](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/src/main/java/com/alex/space/springboot/service/UserService.java)   
 
-**5.Security config**  
 
-
-TO be continue
+To be continue
 ---

@@ -21,6 +21,7 @@ username.client.keytab.file=${hadoop.conf.path}
 java.security.krb5.conf=${hadoop.conf.path}
 ```
 
+
 **1.操作Hdfs文件和文件夹**  
 [com.alex.space.hadoop.utils.HdfsUtils](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/utils/HdfsUtils.java)
 
@@ -62,6 +63,8 @@ java.security.krb5.conf=${hadoop.conf.path}
   - 2.9.2 KPI Analysis  
   [com.alex.space.hadoop.example,kpi](https://github.com/BowenSun90/client-collection/tree/master/hadoop-client/src/main/java/com/alex/space/hadoop/example/kpi)
 
+
+
 ## HBase Client
 配置HBase连接信息 `resources/application.properties`
 ```
@@ -81,6 +84,7 @@ hadoop.security.authentication=none
 username.client.kerberos.principal=
 username.client.keytab.file=
 ```
+
 
 **1.HBaseAdmin操作HBase**  
 [com.alex.space.hbase.utils.HBaseAdminUtils](https://github.com/BowenSun90/client-collection/tree/master/hbase-client/src/main/java/com/alex/space/hbase/utils/HbaseAdminUtils.java)  
@@ -111,9 +115,9 @@ es.node.ip=${es.node.ip}
 es.node.port=${es.node.port}
 ```
 
+
 **1.TransportClient操作Elastic**    
 [com.alex.space.elastic.utils.ElasticUtils](https://github.com/BowenSun90/client-collection/tree/master/elastic-client/src/main/java/com/alex/space/elastic/utils/ElasticUtils.java)
-
 
 
 
@@ -123,6 +127,7 @@ es.node.port=${es.node.port}
 # zookeeper connection info
 zk.nodes=${zk.nodes}
 ```
+
 
 **1.ZKClient操作Zookeeper**  
 [com.alex.space.zoo.client.ZooClient](https://github.com/BowenSun90/client-collection/tree/master/zoo-client/src/main/java/com/alex/space/zoo/client/ZkClientDemo.java)
@@ -141,6 +146,7 @@ zk.nodes=${zk.nodes}
 修改`application.properties`，设置`env=local`本地执行，`env=prod`生产集群执行   
 本地执行配置（如文件路径）在`local.properties`中配置   
 集群执行配置（如文件路径）在`prod.properties`中配置  
+
 
 **1.Spark任务基类**   
 [com.alex.space.spark.mains.BaseWorker](https://github.com/BowenSun90/client-collection/tree/master/spark-client/src/main/scala/com/alex/space/spark/mains/BaseWorker.scala)  
@@ -177,58 +183,37 @@ println("input:" + configString("input"))
 提交方式与[spark-client/bin/wordCount.sh](https://github.com/BowenSun90/client-collection/tree/master/spark-client/bin/wordCount.sh)相同
 
 
+
 ## Hive
 **1.hive常用udf方法**  
 [com.alex.space.hive.udf](https://github.com/BowenSun90/client-collection/tree/master/hive-udf/src/main/java/com/alex/space/hive/udf)
 
-## Storm
-**1.Storm接入Kafka数据**  
-== TODO ==
 
-## Springboot
-**1.Springboot web sample project**  
-配置文件`application.properties`
+
+## Kafka
+配置Kafka连接和Client配置信息 `resources/application.properties`
 ```
-# spring application config
-spring.application.name=webservice-template
-spring.profiles.active=${spring.profiles.active}
-server.context-path=/
-server.port=${port}
+# broker list
+# example:127.0.0.1:9092,127.0.0.2:9092
+broker=127.0.0.1:9092
+# topic name
+topic=test
 
-# mybatis mapper config
-mybatis.mapper-locations=classpath*:mapper/**Mapper.xml
-
-# guava memory cache config
-guava.cache.maximumSize=1000
-guava.cache.duration=1
-# DAYS |HOURS |MINUTES |SECONDS |MILLISECONDS |MICROSECONDS |NANOSECONDS
-guava.cache.unit=DAYS
+# kafka properties
+# 与kafka原生配置一致
+request.required.acks=0
+producer.type=async
+serializer.class=kafka.serializer.StringEncoder
+message.send.max.retries=3
+batch.num.messages=10
+send.buffer.bytes=102400
 ```
-数据库配置`application-{spring.profiles.active}.properties`
-```
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.datasource.url=jdbc:postgresql://${host}:${port}/${database}
-spring.datasource.username=${username}
-spring.datasource.password=${password}
+**1.Kafka消费者**  
+[com.alex.space.JavaKafkaProducer](https://github.com/BowenSun90/client-collection/tree/master/kafka-client/src/main/java/com/alex/space/JavaKafkaProducer)    
 
-spring.datasource.max-idle=50
-spring.datasource.max-wait=10000
-spring.datasource.min-idle=10
-spring.datasource.initial-size=10
-```
-启动类   
-[WebserviceApplication](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/src/main/java/com/alex/space/springboot/WebserviceApplication.java)   
 
-**2.Profile**   
-DEV：使用内嵌Tomcat容器启动  
-PROD：不打包内嵌Tomcat，打包为war放到Jetty中启动   
-[pom.xml](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/pom.xml)   
-
-**3.Swagger APIs**   
-[SwaggerConfig](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/src/main/java/com/alex/space/springboot/cfg/SwaggerConfig.java)  
-
-**4.Guava memory cache**   
-[UserService](https://github.com/BowenSun90/client-collection/blob/master/spring-boot-web/src/main/java/com/alex/space/springboot/service/UserService.java)   
+**2.Kafka消费者消息分区**    
+[com.alex.space.JavaKafkaProducerPartitioner](https://github.com/BowenSun90/client-collection/tree/master/kafka-client/src/main/java/com/alex/space/JavaKafkaProducerPartitioner)    
 
 
 To be continue

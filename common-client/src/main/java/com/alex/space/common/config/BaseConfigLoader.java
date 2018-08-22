@@ -1,6 +1,7 @@
 package com.alex.space.common.config;
 
 import com.alex.space.common.CommonConstants;
+import com.alex.space.common.utils.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -35,6 +36,11 @@ public abstract class BaseConfigLoader {
 
   public String getProperty(String key) {
     return prop.getProperty(key);
+  }
+
+  public String getProperty(String key, String defaultValue) {
+    String value = getProperty(key);
+    return StringUtils.isEmpty(value) ? defaultValue : value;
   }
 
   public Integer getIntProperty(String key) {

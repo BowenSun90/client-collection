@@ -17,7 +17,6 @@
 
   <properties>
     <elastic.version>5.5.1</elastic.version>
-    <jackson.version>2.9.4</jackson.version>
   </properties>
 
   <dependencies>
@@ -25,11 +24,6 @@
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>transport</artifactId>
       <version>${elastic.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.alex.space</groupId>

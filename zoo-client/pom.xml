@@ -17,7 +17,6 @@
   <properties>
     <curator.version>2.11.1</curator.version>
     <zoo.version>3.4.8</zoo.version>
-    <guava.version>18.0</guava.version>
     <zkClient.version>0.10</zkClient.version>
   </properties>
 
@@ -62,7 +61,6 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
     </dependency>
     <dependency>
       <groupId>com.101tec</groupId>

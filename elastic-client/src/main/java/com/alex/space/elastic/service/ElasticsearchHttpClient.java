@@ -5,12 +5,12 @@ import com.alex.space.elastic.config.ElasticConstants;
 import com.alex.space.elastic.entity.EsCount;
 import com.alex.space.elastic.entity.EsDeleteResult;
 import com.alex.space.elastic.entity.EsResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Elastic search http client

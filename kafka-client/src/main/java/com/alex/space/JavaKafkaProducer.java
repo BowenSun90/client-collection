@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Alex Created by Alex on 2018/8/22.
  */
 @Slf4j
+@SuppressWarnings("unchecked")
 public class JavaKafkaProducer {
 
   private static KafkaConfig kafkaConfig = KafkaConfig.getInstance();
@@ -53,24 +54,7 @@ public class JavaKafkaProducer {
     int numThreads = 5;
     ExecutorService pool = Executors.newFixedThreadPool(numThreads);
     for (int i = 0; i < 10; i++) {
-      pool.submit(new Thread(
-          () -> {
-            while (flag.get()) {
-              // Send message
-              KeyedMessage message = generateKeyedMessage(topic);
-              producer.send(message);
-              log.info("Send: " + message);
-
-              try {
-                Thread.sleep(5000);
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
-            }
-
-            log.info(Thread.currentThread().getName() + " shutdown....");
-          }
-      ), "Thread-" + i);
+      pool.submit(new JavaKafkaProducer().new SendThread(topic, flag, producer), "Thread-" + i);
     }
 
     // 5. 等待执行完成，控制暂停消费
@@ -90,7 +74,6 @@ public class JavaKafkaProducer {
     } finally {
       producer.close();
     }
-
 
   }
 
@@ -146,16 +129,73 @@ public class JavaKafkaProducer {
    * 产生一个消息
    */
   private static KeyedMessage<String, String> generateKeyedMessage(String topic) {
+//    return generateRandomKeyedMessage(topic);
+    return generateKeyedMessageWithTime(topic);
+  }
+
+  /**
+   * 产生一个消息
+   *
+   * 随机长度字符串 " "分隔
+   */
+  private static KeyedMessage<String, String> generateRandomKeyedMessage(String topic) {
     String key = "key_" + ThreadLocalRandom.current().nextInt(10, 99);
     StringBuilder sb = new StringBuilder();
     int num = ThreadLocalRandom.current().nextInt(1, 5);
     for (int i = 0; i < num; i++) {
-      sb.append(StringUtils.generateStringMessage(ThreadLocalRandom.current().nextInt(3, 20)))
+      sb.append(StringUtils.generateStringMessage(ThreadLocalRandom.current().nextInt(3, 5)))
           .append(" ");
     }
     String message = sb.toString().trim();
     return new KeyedMessage(topic, key, message);
   }
 
+  /**
+   * 产生一个消息
+   *
+   * "timestamp"\t"user"\t"message"
+   */
+  private static KeyedMessage<String, String> generateKeyedMessageWithTime(String topic) {
+    String key = "key_" + ThreadLocalRandom.current().nextInt(10, 99);
+    String user = "user_" + ThreadLocalRandom.current().nextInt(10);
 
+    StringBuilder sb = new StringBuilder();
+    sb.append(System.currentTimeMillis()).append("\t");
+    sb.append(user).append("\t");
+    sb.append(StringUtils.generateStringMessage(1));
+
+    String message = sb.toString().trim();
+    return new KeyedMessage(topic, key, message);
+  }
+
+  private class SendThread implements Runnable {
+
+    String topic;
+    AtomicBoolean flag;
+    Producer producer;
+
+    SendThread(String topic, AtomicBoolean flag, Producer producer) {
+      this.topic = topic;
+      this.flag = flag;
+      this.producer = producer;
+    }
+
+    @Override
+    public void run() {
+      while (flag.get()) {
+        // Send message
+        KeyedMessage message = generateKeyedMessage(topic);
+        producer.send(message);
+        log.info("Send: " + message);
+
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+
+      log.info(Thread.currentThread().getName() + " shutdown....");
+    }
+  }
 }

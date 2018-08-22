@@ -209,11 +209,11 @@ batch.num.messages=10
 send.buffer.bytes=102400
 ```
 **1.Kafka消费者**  
-[com.alex.space.JavaKafkaProducer](https://github.com/BowenSun90/client-collection/tree/master/kafka-client/src/main/java/com/alex/space/JavaKafkaProducer)    
+[com.alex.space.JavaKafkaProducer](https://github.com/BowenSun90/client-collection/blob/master/kafka-client/src/main/java/com/alex/space/JavaKafkaProducer.java)    
 
 
 **2.Kafka消费者消息分区**    
-[com.alex.space.JavaKafkaProducerPartitioner](https://github.com/BowenSun90/client-collection/tree/master/kafka-client/src/main/java/com/alex/space/JavaKafkaProducerPartitioner)    
+[com.alex.space.JavaKafkaProducerPartitioner](https://github.com/BowenSun90/client-collection/blob/master/kafka-client/src/main/java/com/alex/space/JavaKafkaProducerPartitioner.java)    
 
 
 To be continue

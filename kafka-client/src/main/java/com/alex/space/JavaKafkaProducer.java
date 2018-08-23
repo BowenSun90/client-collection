@@ -28,7 +28,7 @@ public class JavaKafkaProducer {
   private static KafkaConfig kafkaConfig = KafkaConfig.getInstance();
 
   public static void main(String[] args) {
-    String brokerList = kafkaConfig.getProperty(KafkaConstants.BROKER_LIEST);
+    String brokerList = kafkaConfig.getProperty(KafkaConstants.BROKER_LIST);
     String topic = kafkaConfig.getProperty(KafkaConstants.DEFAULT_TOPIC);
     log.info("broker list: " + brokerList);
     log.info("topic: " + topic);

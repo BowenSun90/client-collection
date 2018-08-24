@@ -117,6 +117,34 @@ public class HBaseUtils {
   }
 
   /**
+   * Create table
+   *
+   * @param tableName Table name
+   * @param columnFamilies Column family name
+   * @param splitKeys Table split keys
+   */
+  public void createTable(String tableName, String[] columnFamilies, byte[][] splitKeys)
+      throws IOException {
+    Admin admin = connection.getAdmin();
+    TableName name = TableName.valueOf(tableName);
+
+    if (admin.tableExists(name)) {
+      log.warn("Table {} exists.", name);
+    } else {
+      HTableDescriptor desc = new HTableDescriptor(TableName.valueOf(tableName));
+
+      for (String columnFamily : columnFamilies) {
+        HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(columnFamily);
+        desc.addFamily(hColumnDescriptor);
+      }
+      admin.createTable(desc, splitKeys);
+      log.info("Create table {}.", tableName);
+    }
+
+    admin.close();
+  }
+
+  /**
    * Drop table
    *
    * @param tableName Table name

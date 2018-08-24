@@ -15,7 +15,7 @@
     <slf4j.version>1.7.5</slf4j.version>
     <http.version>4.4.1</http.version>
     <lombok.version>1.16.18</lombok.version>
-    <guava.version>18.0</guava.version>
+    <guava.version>12.0</guava.version>
     <jackson.version>2.9.4</jackson.version>
   </properties>
 

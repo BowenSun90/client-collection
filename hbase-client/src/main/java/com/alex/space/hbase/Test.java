@@ -16,7 +16,7 @@ public class Test {
 
     HBaseUtils hBaseUtils = HBaseUtils.getInstance();
 
-    String table = "crowd_bitmap";
+    String table = "trait_info";
     String[] columnFamilies = {"d"};
     String[] columns = {"tenant_id", "object_id", "object_type", "rowkey", "lastUpdateTime",
         "bitmap"};

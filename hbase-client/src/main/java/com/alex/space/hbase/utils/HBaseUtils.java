@@ -1,5 +1,6 @@
 package com.alex.space.hbase.utils;
 
+import com.alex.space.common.utils.StringUtils;
 import com.alex.space.hbase.config.HBaseConfig;
 import com.alex.space.hbase.factory.HbaseDataAccessException;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
@@ -30,6 +32,11 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.filter.ColumnPrefixFilter;
+import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
+import org.apache.hadoop.hbase.filter.PrefixFilter;
+import org.apache.hadoop.hbase.filter.SubstringComparator;
+import org.apache.hadoop.hbase.filter.ValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
 /**
@@ -272,6 +279,76 @@ public class HBaseUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Scan table records
+   *
+   * @param tableName Table name
+   * @param prefix rowkey prefix
+   */
+  public void scanRecord(String tableName, String prefix) {
+    StopWatch watch = new StopWatch();
+    try {
+      watch.start();
+      TableName name = TableName.valueOf(tableName);
+
+      Table table = connection.getTable(name);
+      Scan scan = new Scan();
+      scan.setBatch(1000);
+      scan.setFilter(new PrefixFilter(Bytes.toBytes(prefix)));
+      ResultScanner rs = table.getScanner(scan);
+
+      for (Result result : rs) {
+        for (Cell cell : result.rawCells()) {
+          printlnCell(cell);
+        }
+      }
+
+      table.close();
+      watch.stop();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    log.info("Execute time: " + watch.getTime());
+  }
+
+  /**
+   * Scan table records
+   *
+   * @param tableName Table name
+   * @param column column name prefix
+   * @param value column value
+   */
+  public void scanRecord(String tableName, String column, String value) {
+    StopWatch watch = new StopWatch();
+    try {
+      watch.start();
+      TableName name = TableName.valueOf(tableName);
+
+      Table table = connection.getTable(name);
+      Scan scan = new Scan();
+      scan.setBatch(100);
+      scan.setFilter(new ColumnPrefixFilter(Bytes.toBytes(column)));
+      if (StringUtils.isEmpty(value)) {
+        scan.setFilter(new ValueFilter(CompareOp.EQUAL, new SubstringComparator(value)));
+      }
+      ResultScanner rs = table.getScanner(scan);
+
+      for (Result result : rs) {
+        for (Cell cell : result.rawCells()) {
+          printlnCell(cell);
+        }
+      }
+
+      table.close();
+      watch.stop();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    log.info("Execute time: " + watch.getTime());
   }
 
   /**

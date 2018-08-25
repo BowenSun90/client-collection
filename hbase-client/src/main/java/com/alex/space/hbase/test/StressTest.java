@@ -80,7 +80,7 @@ public class StressTest {
 
         int userId = ThreadLocalRandom.current().nextInt(100000);
         String rowKey =
-            "user" + (columnNum % 1999 != 0 ? "_" : "") + StringUtils.leftPad(4, userId);
+            "user" + (columnNum % 15 != 0 ? "_" : "") + StringUtils.leftPad(4, userId);
 
         hBaseUtils.put(tableName, rowKey, columnFamilies[0], columns, values);
         log.info("Put: " + i + "[" + userId + "]");

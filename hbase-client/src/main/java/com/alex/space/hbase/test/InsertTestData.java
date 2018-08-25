@@ -1,18 +1,16 @@
-package com.alex.space.hbase;
+package com.alex.space.hbase.test;
 
 import com.alex.space.hbase.utils.HBaseUtils;
 import java.time.LocalTime;
-import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Alex Created by Alex on 2018/6/22.
  */
 @Slf4j
-public class Test {
+public class InsertTestData {
 
   public static void main(String[] args) {
-    Random r = new Random();
 
     HBaseUtils hBaseUtils = HBaseUtils.getInstance();
 

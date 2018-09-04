@@ -2,6 +2,7 @@ package com.alex.space.elastic.utils;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
+import com.alex.space.common.utils.StringUtils;
 import com.alex.space.elastic.config.ElasticConfig;
 import com.alex.space.elastic.factory.DataFactory;
 import java.io.BufferedReader;
@@ -12,17 +13,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -50,7 +50,7 @@ public class ElasticUtils {
 
   private static TransportClient client;
 
-  private static void init() throws UnknownHostException {
+  public static void init() throws UnknownHostException {
 
     //设置集群名称
     Settings settings = Settings.builder()
@@ -64,46 +64,25 @@ public class ElasticUtils {
   }
 
   /**
-   * 测试集群
-   */
-  private static void testClient() {
-    //搜索数据
-    GetResponse response = client.prepareGet("accounts", "person", "2").execute().actionGet();
-
-    //输出结果
-    System.out.println(response.getSourceAsString());
-  }
-
-  private static void createIndex() throws IOException {
-    IndexResponse response = client.prepareIndex("twitter", "tweet", "2")
-        .setSource(
-            jsonBuilder()
-                .startObject()
-                .field("user", "alex")
-                .field("postDate", new Date())
-                .field("message", "trying out Elasticsearch")
-                .endObject()
-        )
-        .get();
-
-    System.out.println(response);
-  }
-
-  /**
    * Insert index into elastic cluster
    *
    * @param index index name
    * @param type type name
    * @param records record list, json format
    */
-  private static void insertData(String index, String type, List<String> records) {
+  public static void insertData(String index, String type, List<String> records) {
 
     Random random = new Random();
     for (String jsonData : records) {
-      IndexResponse response = client.prepareIndex(index, type, String.valueOf(random.nextInt(100)))
-          .setSource(jsonData, XContentType.JSON)
-          .get();
-      System.out.println("Insert:\t" + response);
+      try {
+        IndexResponse response = client
+            .prepareIndex(index, type, String.valueOf(random.nextInt(2000)))
+            .setSource(jsonData, XContentType.JSON)
+            .get();
+        System.out.println("Insert:\t" + response);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      }
     }
   }
 
@@ -115,7 +94,7 @@ public class ElasticUtils {
    * @param value column value
    * @param fields field list
    */
-  private static void queryData(String index, String type, String value, String... fields) {
+  public static void queryData(String index, String type, String value, String... fields) {
 
     QueryBuilder query = QueryBuilders.multiMatchQuery(value, fields);
 
@@ -139,7 +118,7 @@ public class ElasticUtils {
   /**
    * Update index value
    */
-  private static void updateData() throws IOException, ExecutionException, InterruptedException {
+  public static void updateData() throws IOException, ExecutionException, InterruptedException {
     // 更新方式一 创建一个UpdateRequest,然后将其发送给client
     UpdateRequest uRequest = new UpdateRequest();
     uRequest.index("blog");
@@ -189,7 +168,35 @@ public class ElasticUtils {
 
   }
 
-  private static void deleteIndex(String indexName) {
+  /**
+   * Update index value
+   */
+  public static void updateData(String index, String type) {
+
+    try {
+      // 创建一个UpdateRequest,然后将其发送给client
+      Random random = new Random();
+
+      // 更新方式二 prepareUpdate() 使用doc更新索引
+      UpdateResponse response = client
+          .prepareUpdate(index, type, String.valueOf(random.nextInt(2000)))
+          .setDoc(
+              jsonBuilder()
+                  .startObject()
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .endObject()
+          ).get();
+
+      System.out.println("Update:\t" + response);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
+  }
+
+  public static void deleteIndex(String indexName) {
 
     // 判断索引是否存在
     IndicesExistsRequest inExistsRequest = new IndicesExistsRequest(indexName);
@@ -210,7 +217,7 @@ public class ElasticUtils {
     }
   }
 
-  private static void deleteDocById(String indexName, String type, String id) {
+  public static void deleteDocById(String indexName, String type, String id) {
     DeleteResponse dResponse = client.prepareDelete(indexName, type, id).execute().actionGet();
 
     System.out.println(dResponse);
@@ -223,7 +230,7 @@ public class ElasticUtils {
     }
   }
 
-  private static void export() throws IOException {
+  public static void export() throws IOException {
     QueryBuilder qb = QueryBuilders.matchAllQuery();
 
     SearchResponse response = client.prepareSearch("blog")
@@ -253,7 +260,7 @@ public class ElasticUtils {
     fw.close();
   }
 
-  private static void bulkIn() throws IOException {
+  public static void bulkIn() throws IOException {
     File article = new File("bulk.txt");
     FileReader fr = new FileReader(article);
     BufferedReader bfr = new BufferedReader(fr);
@@ -283,6 +290,7 @@ public class ElasticUtils {
 
     try {
       init();
+
       List<String> jsonData = DataFactory.getInitJsonData();
 
       insertData(index, type, jsonData);
@@ -312,6 +320,14 @@ public class ElasticUtils {
       }
     }
 
+  }
+
+  private static String generateRandomKey() {
+    final char[] chars = "bcde".toCharArray();
+
+    return StringUtils
+        .generateStringMessage(ThreadLocalRandom.current().nextInt(2, 5), chars)
+        .toLowerCase();
   }
 
 }

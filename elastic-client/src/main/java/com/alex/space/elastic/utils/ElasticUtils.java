@@ -22,6 +22,7 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -305,6 +306,18 @@ public class ElasticUtils {
 
     bfr.close();
     fr.close();
+  }
+
+  public static void bulkIn(String index, String type, List<String> records, int offset) {
+    BulkRequestBuilder bulkRequest = client.prepareBulk();
+
+    for (String jsonData : records) {
+      String id = String.valueOf(offset++);
+      bulkRequest.add(client.prepareIndex(index, type, id).setSource(jsonData, XContentType.JSON));
+    }
+
+    BulkResponse response = bulkRequest.execute().actionGet();
+    log.info("Bulk request add: " + response.status().getStatus());
   }
 
   public static boolean exists(String index, String type, String id) {

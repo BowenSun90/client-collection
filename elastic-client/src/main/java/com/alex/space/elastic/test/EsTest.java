@@ -16,7 +16,7 @@ import org.joda.time.PeriodType;
  * @author Alex Created by Alex on 2018/9/4.
  */
 @Slf4j
-public class EsInsert {
+public class EsTest {
 
   public static void main(String[] args) throws UnknownHostException {
     ElasticUtils.init();
@@ -27,6 +27,7 @@ public class EsInsert {
 
     queryData();
 
+    bulkIn();
   }
 
   /**
@@ -41,14 +42,14 @@ public class EsInsert {
       StopWatch stopWatch = new StopWatch();
       stopWatch.start();
 
-      for (int i = 0; i < 100; i++) {
-        List<String> jsonData = DataFactory.getInitRandomJsonData();
+      for (int i = 0; i < 1000; i++) {
+        List<String> jsonData = DataFactory.getInitRandomJsonData(10);
 
         ElasticUtils.insertData(index, type, jsonData);
 
         if (i % 100 == 0 && i != 0) {
           stopWatch.stop();
-          log.info(Thread.currentThread().getName() + "Insert Time: " + stopWatch.totalTime()
+          log.info(Thread.currentThread().getName() + " Insert Time: " + stopWatch.totalTime()
               .format(PeriodType.millis()));
           stopWatch = new StopWatch();
           stopWatch.start();
@@ -62,6 +63,9 @@ public class EsInsert {
 
   }
 
+  /**
+   * 随机更新数据
+   */
   private static void updateRandomData() {
     String index = "test";
     String type = "data";
@@ -73,9 +77,9 @@ public class EsInsert {
 
       for (int j = 0; j < 10000; j++) {
         ElasticUtils.updateData(index, type);
-        if (j % 1000 == 0 && j != 0) {
+        if (j % 5000 == 0 && j != 0) {
           stopWatch.stop();
-          log.info(Thread.currentThread().getName() + "Update Time: " + stopWatch.totalTime()
+          log.info(Thread.currentThread().getName() + " Update Time: " + stopWatch.totalTime()
               .format(PeriodType.millis()));
           stopWatch = new StopWatch();
           stopWatch.start();
@@ -93,30 +97,36 @@ public class EsInsert {
    */
   private static void insertData() {
 
-    ExecutorService pool = Executors.newFixedThreadPool(5);
-    for (int i = 0; i < 100; i++) {
-      pool.submit(EsInsert::insertSparseData);
+    ExecutorService pool = Executors.newFixedThreadPool(10);
+    for (int i = 0; i < 1000; i++) {
+      pool.submit(EsTest::insertSparseData);
     }
 
     pool.shutdown();
   }
 
+  /**
+   * 多线程更新数据
+   */
   private static void updateData() {
 
-    ExecutorService pool = Executors.newFixedThreadPool(5);
+    ExecutorService pool = Executors.newFixedThreadPool(20);
     for (int i = 0; i < 100; i++) {
-      pool.submit(EsInsert::updateRandomData);
+      pool.submit(EsTest::updateRandomData);
     }
 
     pool.shutdown();
   }
 
+  /**
+   * 多线程查询数据
+   */
   private static void queryData() {
     String index = "test";
     String type = "data";
 
-    ExecutorService pool = Executors.newFixedThreadPool(5);
-    for (int i = 0; i < 1000; i++) {
+    ExecutorService pool = Executors.newFixedThreadPool(10);
+    for (int i = 0; i < 10000; i++) {
       pool.submit(() -> ElasticUtils.queryData(index, type));
 
     }
@@ -124,4 +134,18 @@ public class EsInsert {
     pool.shutdown();
   }
 
+  private static void bulkIn() {
+    String index = "test";
+    String type = "data";
+
+    int offset = 100000;
+    for (int i = 0; i < 1000; i++) {
+      List<String> jsonData = DataFactory.getInitRandomJsonData(1000);
+
+      ElasticUtils.bulkIn(index, type, jsonData, offset);
+      offset += jsonData.size();
+      log.info("offset: " + offset);
+    }
+
+  }
 }

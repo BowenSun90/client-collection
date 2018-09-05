@@ -48,31 +48,14 @@ public class DataFactory {
     return list;
   }
 
-  public static List<String> getInitRandomJsonData() {
+  public static List<String> getInitRandomJsonData(int length) {
 
     List<String> list = new ArrayList<>();
 
-    String data1 = JsonUtil.randomJson();
-    String data2 = JsonUtil.randomJson();
-    String data3 = JsonUtil.randomJson();
-    String data4 = JsonUtil.randomJson();
-    String data5 = JsonUtil.randomJson();
-    String data6 = JsonUtil.randomJson();
-    String data7 = JsonUtil.randomJson();
-    String data8 = JsonUtil.randomJson();
-    String data9 = JsonUtil.randomJson();
-    String data0 = JsonUtil.randomJson();
+    for (int i = 0; i < length; i++) {
+      list.add(JsonUtil.randomJson());
 
-    list.add(data0);
-    list.add(data1);
-    list.add(data2);
-    list.add(data3);
-    list.add(data4);
-    list.add(data5);
-    list.add(data6);
-    list.add(data7);
-    list.add(data8);
-    list.add(data9);
+    }
 
     return list;
   }

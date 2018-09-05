@@ -23,6 +23,7 @@ import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsReques
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -75,11 +76,15 @@ public class ElasticUtils {
     Random random = new Random();
     for (String jsonData : records) {
       try {
-        IndexResponse response = client
-            .prepareIndex(index, type, String.valueOf(random.nextInt(100000)))
-            .setSource(jsonData, XContentType.JSON)
-            .get();
-        log.info("Insert:\t" + response);
+        String id = String.valueOf(random.nextInt(100000));
+
+        if (!exists(index, type, id)) {
+          IndexResponse response = client
+              .prepareIndex(index, type, id)
+              .setSource(jsonData, XContentType.JSON)
+              .get();
+          log.debug("Insert:\t" + response);
+        }
       } catch (Exception e) {
         log.error(e.getMessage());
       }
@@ -101,6 +106,8 @@ public class ElasticUtils {
     SearchResponse response = client.prepareSearch(index)
         .setTypes(type)
         .setQuery(query)
+        .setFetchSource(new String[]{"bb", "bbb"}, null)
+        .setMinScore(8.5f)
         .execute()
         .actionGet();
 
@@ -110,7 +117,7 @@ public class ElasticUtils {
         log.info("score:" + hit.getScore() + ":\t" + hit.getSource());
       }
     } else {
-      log.info("搜到0条结果");
+      log.debug("搜到0条结果");
     }
 
   }
@@ -120,8 +127,6 @@ public class ElasticUtils {
    *
    * @param index index name
    * @param type type name
-   * @param value column value
-   * @param fields field list
    */
   public static void queryData(String index, String type) {
 
@@ -190,10 +195,14 @@ public class ElasticUtils {
     try {
       // 创建一个UpdateRequest,然后将其发送给client
       Random random = new Random();
+      String id = String.valueOf(random.nextInt(100000));
+      if (!exists(index, type, id)) {
+        return;
+      }
 
       // 更新方式二 prepareUpdate() 使用doc更新索引
       UpdateResponse response = client
-          .prepareUpdate(index, type, String.valueOf(random.nextInt(100000)))
+          .prepareUpdate(index, type, id)
           .setDoc(
               jsonBuilder()
                   .startObject()
@@ -201,10 +210,16 @@ public class ElasticUtils {
                   .field(generateRandomKey(), generateRandomKey())
                   .field(generateRandomKey(), generateRandomKey())
                   .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
+                  .field(generateRandomKey(), generateRandomKey())
                   .endObject()
-          ).get();
+          ).setRetryOnConflict(1).get();
 
-      log.info("Update:\t" + response);
+      log.debug("Update:\t" + response);
     } catch (Exception e) {
       log.error(e.getMessage());
     }
@@ -290,6 +305,11 @@ public class ElasticUtils {
 
     bfr.close();
     fr.close();
+  }
+
+  public static boolean exists(String index, String type, String id) {
+    GetResponse response = client.prepareGet(index, type, id).get();
+    return response.isExists();
   }
 
   /**

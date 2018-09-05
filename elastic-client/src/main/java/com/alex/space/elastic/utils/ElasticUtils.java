@@ -76,10 +76,10 @@ public class ElasticUtils {
     for (String jsonData : records) {
       try {
         IndexResponse response = client
-            .prepareIndex(index, type, String.valueOf(random.nextInt(2000)))
+            .prepareIndex(index, type, String.valueOf(random.nextInt(100000)))
             .setSource(jsonData, XContentType.JSON)
             .get();
-        System.out.println("Insert:\t" + response);
+        log.info("Insert:\t" + response);
       } catch (Exception e) {
         log.error(e.getMessage());
       }
@@ -116,6 +116,20 @@ public class ElasticUtils {
   }
 
   /**
+   * Query data by matching column value
+   *
+   * @param index index name
+   * @param type type name
+   * @param value column value
+   * @param fields field list
+   */
+  public static void queryData(String index, String type) {
+
+    queryData(index, type, generateRandomKey(), generateRandomKey(), generateRandomKey());
+
+  }
+
+  /**
    * Update index value
    */
   public static void updateData() throws IOException, ExecutionException, InterruptedException {
@@ -131,7 +145,7 @@ public class ElasticUtils {
             .endObject()
     );
     UpdateResponse response = client.update(uRequest).get();
-    System.out.println("Update:\t" + response);
+    log.info("Update:\t" + response);
 
     // 更新方式二 prepareUpdate() 使用doc更新索引
     response = client.prepareUpdate("blog", "article", "18")
@@ -141,13 +155,13 @@ public class ElasticUtils {
                 .field("content", "SVN与Git对比。。。")
                 .endObject()
         ).get();
-    System.out.println("Update:\t" + response);
+    log.info("Update:\t" + response);
 
     // 更新方式三 增加新的字段
     UpdateRequest updateRequest = new UpdateRequest("blog", "article", "88")
         .doc(jsonBuilder().startObject().field("comment", "comment").endObject());
     client.update(updateRequest).get();
-    System.out.println("Update:\t" + updateRequest);
+    log.info("Update:\t" + updateRequest);
 
     // 更新方式四 upsert 如果文档不存在则创建新的索引
     IndexRequest indexRequest = new IndexRequest("blog", "article", "103")
@@ -155,7 +169,7 @@ public class ElasticUtils {
             .field("title", "Git安装10")
             .field("content", "学习目标 git。。。10")
             .endObject());
-    System.out.println("Update:\t" + indexRequest);
+    log.info("Update:\t" + indexRequest);
 
     UpdateRequest uRequest2 = new UpdateRequest("blog", "article", "104")
         .doc(jsonBuilder().startObject()
@@ -164,7 +178,7 @@ public class ElasticUtils {
             .endObject())
         .upsert(indexRequest);
     client.update(uRequest2).get();
-    System.out.println("Update:\t" + uRequest2);
+    log.info("Update:\t" + uRequest2);
 
   }
 
@@ -179,7 +193,7 @@ public class ElasticUtils {
 
       // 更新方式二 prepareUpdate() 使用doc更新索引
       UpdateResponse response = client
-          .prepareUpdate(index, type, String.valueOf(random.nextInt(2000)))
+          .prepareUpdate(index, type, String.valueOf(random.nextInt(100000)))
           .setDoc(
               jsonBuilder()
                   .startObject()
@@ -190,7 +204,7 @@ public class ElasticUtils {
                   .endObject()
           ).get();
 
-      System.out.println("Update:\t" + response);
+      log.info("Update:\t" + response);
     } catch (Exception e) {
       log.error(e.getMessage());
     }
@@ -203,30 +217,28 @@ public class ElasticUtils {
     IndicesExistsResponse inExistsResponse = client.admin().indices().exists(inExistsRequest)
         .actionGet();
     if (inExistsResponse.isExists()) {
-      System.out.println("Index: " + indexName + " exists.");
+      log.info("Index: " + indexName + " exists.");
 
       DeleteIndexResponse dResponse = client.admin().indices().prepareDelete(indexName).execute()
           .actionGet();
       if (dResponse.isAcknowledged()) {
-        System.out.println("Index: " + indexName + " delete success.");
+        log.info("Index: " + indexName + " delete success.");
       } else {
-        System.out.println("Index: " + indexName + " delete failed.");
+        log.info("Index: " + indexName + " delete failed.");
       }
     } else {
-      System.out.println("Index: " + indexName + " not exists.");
+      log.info("Index: " + indexName + " not exists.");
     }
   }
 
   public static void deleteDocById(String indexName, String type, String id) {
     DeleteResponse dResponse = client.prepareDelete(indexName, type, id).execute().actionGet();
 
-    System.out.println(dResponse);
+    log.info("" + dResponse);
     if (dResponse.getResult().getLowercase().equalsIgnoreCase("deleted")) {
-      System.out
-          .println("Index: " + indexName + ", Type: " + type + "Id: " + id + " delete success.");
+      log.info("Index: " + indexName + ", Type: " + type + "Id: " + id + " delete success.");
     } else {
-      System.out
-          .println("Index: " + indexName + ", Type: " + type + "Id: " + id + " delete failed.");
+      log.info("Index: " + indexName + ", Type: " + type + "Id: " + id + " delete failed.");
     }
   }
 
@@ -244,13 +256,13 @@ public class ElasticUtils {
     BufferedWriter bfw = new BufferedWriter(fw);
 
     if (resultHits.getHits().length == 0) {
-      System.out.println("查到0条数据!");
+      log.info("查到0条数据!");
 
     } else {
       for (int i = 0; i < resultHits.getHits().length; i++) {
         String jsonStr = resultHits.getHits()[i]
             .getSourceAsString();
-        System.out.println(jsonStr);
+        log.info(jsonStr);
         bfw.write(jsonStr);
         bfw.write("\n");
       }

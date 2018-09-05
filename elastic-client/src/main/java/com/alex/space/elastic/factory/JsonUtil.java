@@ -44,9 +44,9 @@ public class JsonUtil {
     String key2 = generateRandomKey();
     String key3 = generateRandomKey();
 
-    String value1 = generateRandomKey();
-    String value2 = generateRandomKey();
-    String value3 = generateRandomKey();
+    String value1 = generateRandomValue();
+    String value2 = generateRandomValue();
+    String value3 = generateRandomValue();
 
     try {
       XContentBuilder jsonBuild = XContentFactory.jsonBuilder();
@@ -71,6 +71,14 @@ public class JsonUtil {
 
     return StringUtils
         .generateStringMessage(ThreadLocalRandom.current().nextInt(2, 5), chars)
+        .toLowerCase();
+  }
+
+  private static String generateRandomValue() {
+    final char[] chars = "abcde".toCharArray();
+
+    return StringUtils
+        .generateStringMessage(ThreadLocalRandom.current().nextInt(2, 8), chars)
         .toLowerCase();
   }
 

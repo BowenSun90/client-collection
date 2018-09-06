@@ -40,21 +40,13 @@ public class JsonUtil {
   public static String randomJson() {
     String jsonData = null;
 
-    String key1 = generateRandomKey();
-    String key2 = generateRandomKey();
-    String key3 = generateRandomKey();
-
-    String value1 = generateRandomValue();
-    String value2 = generateRandomValue();
-    String value3 = generateRandomValue();
-
     try {
       XContentBuilder jsonBuild = XContentFactory.jsonBuilder();
-      jsonBuild.startObject()
-          .field(key1, value1)
-          .field(key2, value2)
-          .field(key3, value3)
-          .endObject();
+      XContentBuilder builder = jsonBuild.startObject();
+      for (int i = 0; i < 20; i++) {
+        builder.field(generateRandomKey(), generateRandomValue());
+      }
+      builder.endObject();
 
       jsonData = jsonBuild.string();
 

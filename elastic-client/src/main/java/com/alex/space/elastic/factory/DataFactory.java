@@ -54,7 +54,6 @@ public class DataFactory {
 
     for (int i = 0; i < length; i++) {
       list.add(JsonUtil.randomJson());
-
     }
 
     return list;

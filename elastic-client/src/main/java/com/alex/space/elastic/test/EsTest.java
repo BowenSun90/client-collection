@@ -18,16 +18,30 @@ import org.joda.time.PeriodType;
 @Slf4j
 public class EsTest {
 
-  public static void main(String[] args) throws UnknownHostException {
+  public static void main(String[] args) throws UnknownHostException, InterruptedException {
     ElasticUtils.init();
 
-    insertData();
+//    insertData();
 
-    updateData();
+//    updateData();
 
-    queryData();
+//    queryData();
 
-    bulkIn();
+//    bulkIn();
+
+//    bulkUpdate();
+
+    Thread bulkIn = new Thread(() -> bulkIn());
+    bulkIn.start();
+
+    Thread bulkUpdate = new Thread(() -> bulkUpdate());
+    bulkUpdate.start();
+
+    while (bulkIn.isAlive() || bulkUpdate.isAlive()) {
+      Thread.sleep(30000);
+    }
+
+    System.exit(0);
   }
 
   /**
@@ -138,13 +152,49 @@ public class EsTest {
     String index = "test";
     String type = "data";
 
-    int offset = 100000;
-    for (int i = 0; i < 1000; i++) {
-      List<String> jsonData = DataFactory.getInitRandomJsonData(1000);
+    StopWatch stopWatch = new StopWatch();
 
-      ElasticUtils.bulkIn(index, type, jsonData, offset);
+    int avg = 0;
+    int offset = 4747455;
+    for (int i = 0; i < 500; i++) {
+      List<String> jsonData = DataFactory.getInitRandomJsonData(5000);
+      stopWatch.start();
+      ElasticUtils.bulkInsert(index, type, jsonData, offset);
       offset += jsonData.size();
-      log.info("offset: " + offset);
+      stopWatch.stop();
+      log.debug("Insert offset: " + offset + ", time: " + stopWatch.totalTime().getMillis());
+      avg += stopWatch.totalTime().getMillis();
+      if (i % 20 == 0 && i != 0) {
+        log.info("Avg insert 5000 time:" + avg / 20.0 / 1000.0 + "s.");
+        avg = 0;
+      }
+      stopWatch = new StopWatch();
+
+    }
+  }
+
+  private static void bulkUpdate() {
+    String index = "test";
+    String type = "data";
+
+    StopWatch stopWatch = new StopWatch();
+
+    int avg = 0;
+    int offset = 1000000;
+    for (int i = 0; i < 500; i++) {
+      List<String> jsonData = DataFactory.getInitRandomJsonData(5000);
+      stopWatch.start();
+      ElasticUtils.bulkUpdate(index, type, jsonData, offset);
+      offset += jsonData.size();
+      stopWatch.stop();
+      log.debug("Update offset: " + offset + ", time: " + stopWatch.totalTime().getMillis());
+      avg += stopWatch.totalTime().getMillis();
+      if (i % 20 == 0 && i != 0) {
+        log.info("Avg update 5000 time:" + avg / 20.0 / 1000.0 + "s.");
+        avg = 0;
+      }
+      stopWatch = new StopWatch();
+
     }
 
   }

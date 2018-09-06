@@ -308,7 +308,7 @@ public class ElasticUtils {
     fr.close();
   }
 
-  public static void bulkIn(String index, String type, List<String> records, int offset) {
+  public static void bulkInsert(String index, String type, List<String> records, int offset) {
     BulkRequestBuilder bulkRequest = client.prepareBulk();
 
     for (String jsonData : records) {
@@ -317,7 +317,19 @@ public class ElasticUtils {
     }
 
     BulkResponse response = bulkRequest.execute().actionGet();
-    log.info("Bulk request add: " + response.status().getStatus());
+    log.debug("Bulk request add: " + response.status().getStatus());
+  }
+
+  public static void bulkUpdate(String index, String type, List<String> records, int offset) {
+    BulkRequestBuilder bulkRequest = client.prepareBulk();
+
+    for (String jsonData : records) {
+      String id = String.valueOf(offset++);
+      bulkRequest.add(client.prepareUpdate(index, type, id).setDoc(jsonData, XContentType.JSON));
+    }
+
+    BulkResponse response = bulkRequest.execute().actionGet();
+    log.debug("Bulk request update: " + response.status().getStatus());
   }
 
   public static boolean exists(String index, String type, String id) {

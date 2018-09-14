@@ -135,7 +135,6 @@
   </profiles>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -230,7 +229,6 @@
       </plugin>
     </plugins>
   </build>
-
 
   <repositories>
     <repository>

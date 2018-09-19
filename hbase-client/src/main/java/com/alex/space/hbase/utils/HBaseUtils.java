@@ -75,6 +75,10 @@ public class HBaseUtils {
         conf.set("hbase.zookeeper.property.clientPort",
             hBaseConfig.getProperty("hbase.zookeeper.property.clientPort"));
 
+        conf.set("hbase.rootdir", hBaseConfig.getProperty("hbase.rootdir"));
+
+        conf.set("fs.defaultFS", hBaseConfig.getProperty("hbase.fs.defaultFS"));
+
         connection = ConnectionFactory.createConnection(conf, pool);
       } catch (IOException e) {
         e.printStackTrace();

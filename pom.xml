@@ -16,7 +16,7 @@
     <http.version>4.4.1</http.version>
     <lombok.version>1.16.18</lombok.version>
     <guava.version>12.0</guava.version>
-    <jackson.version>2.9.4</jackson.version>
+    <jackson.version>2.9.7</jackson.version>
   </properties>
 
   <modules>
@@ -67,6 +67,11 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
         <version>${jackson.version}</version>
       </dependency>
     </dependencies>

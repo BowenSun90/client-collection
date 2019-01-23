@@ -28,6 +28,7 @@
     <module>spark-client</module>
     <module>hive-udf</module>
     <module>kafka-client</module>
+    <module>flink-batch-client</module>
   </modules>
 
   <repositories>

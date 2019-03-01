@@ -376,6 +376,32 @@ public class HBaseUtils {
     }
   }
 
+  /**
+   * Delete by row key
+   *
+   * @param tableName Table name
+   * @param rows Row key list
+   */
+  public void delete(String tableName, List<String> rows) {
+
+    try {
+      TableName name = TableName.valueOf(tableName);
+      Table table = connection.getTable(name);
+
+      List<Delete> deletes = new ArrayList<>();
+
+      for (String row : rows) {
+        Delete delete = new Delete(Bytes.toBytes(row));
+        deletes.add(delete);
+      }
+      table.delete(deletes);
+
+      table.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   private void printlnCell(Cell cell) {
     System.out.print(Bytes.toString(CellUtil.cloneRow(cell)) + " ");
     System.out.print(Bytes.toString(CellUtil.cloneFamily(cell)) + ":");
